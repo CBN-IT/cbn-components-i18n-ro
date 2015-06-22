@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	
+	<script src="../../webcomponentsjs/webcomponents.min.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	
+	<!-- Elements to be tested -->
+	<link rel="import" href="../../cbn-form/cbn-form.html">
+	<link rel="import" href="../../cbn-form/basic-components/basic-input.html">
+	<link rel="import" href="../validators/identification.html">
+	<link rel="import" href="../messages-validator.html">
+	
+</head>
+<body>
+
+<cbn-form id="firstForm">
+	
+	<input is="cbn-basic-input" type="text" title="One" id="input1_1" preview name="one" />
+	<input is="cbn-basic-input" type="text" title="Two" id="input1_2" name="two" />
+	<input is="cbn-basic-input" type="text" title="Three" id="input1_3" name="three" />
+	<input is="cbn-basic-input" type="text" title="Four" id="input1_4" name="four" />
+	<input is="cbn-basic-input" type="text" title="Five" id="input1_5" name="five" />
+	
+</cbn-form>
+
+<script>
+	
+	var form = document.querySelector('#firstForm');
+	
+	// Set-up the test suite
+	suiteSetup(function(done){
+		// hack for polyfilled elements, need to refetch the proxied element
+		form = document.querySelector('#firstForm');
+		CbnForm.Validator.language = 'ro';
+		flush(done);
+	});
+	
+	test('ro-internationalized messages', function (done) {
+		var input1 = form.querySelector('#input1_1');
+		var input2 = form.querySelector('#input1_2');
+		var input3 = form.querySelector('#input1_3');
+		
+		console.log(CbnForm.Validator);
+		
+		assert.ok(CbnForm.Validator._messages['ro']['_default']);
+		assert.ok(CbnForm.Validator._messages['ro']['required']);
+		
+		input1.validation = {
+			required: true
+		};
+		input2.validation = {
+			"ro-cnp": true
+		};
+		input3.validation = {
+			"ro-cif": true
+		};
+		
+		input1.value = '';
+		input2.value = 'asdasdasdas';
+		input3.value = 'dasdasdasdas';
+		
+		flush(function(){
+			input1.validate();
+			assert.equal(input1.validationState.message, CbnForm.Validator._messages['ro']['required'], 
+				'required i18n-ro message');
+			
+			assert.notOk(input2.validate(), 'ro-cnp validation');
+			assert.equal(input2.validationState.message, CbnForm.Validator._messages['ro']['ro-cnp'], 
+				'ro-cnp i18n-ro message');
+			
+			assert.notOk(input3.validate(), 'ro-cif validation');
+			assert.equal(input3.validationState.message, CbnForm.Validator._messages['ro']['ro-cif'], 
+				'ro-cif i18n-ro message');
+			
+			done();
+		});
+	});
+	
+	test('ro-specific validators', function (done) {
+		var input1 = form.querySelector('#input1_1');
+		var input2 = form.querySelector('#input1_2');
+		var input3 = form.querySelector('#input1_3');
+		var input4 = form.querySelector('#input1_4');
+		var input5 = form.querySelector('#input1_5');
+		
+		input1.validation = input2.validation = {
+			"ro-cnp": true
+		};
+		input3.validation = input4.validation = input5.validation = {
+			"ro-cif": true
+		};
+		
+		input1.value = '1902342342345'; // invalid
+		input2.value = '1900515188610'; // valid
+		input3.value = 'RO6558204'; // invalid
+		input4.value = 'RO6859662'; // valid
+		input5.value = '1900515188610'; // valid CNP
+		
+		flush(function(){
+			
+			assert.notOk(input1.validate(), 'ro-cnp negative validation');
+			assert.ok(input2.validate(), 'ro-cnp positive validation');
+			
+			assert.notOk(input3.validate(), 'ro-cif negative validation');
+			assert.ok(input4.validate(), 'ro-cif positive validation');
+			assert.ok(input5.validate(), 'ro-cif positive CNP validation');
+			
+			done();
+		});
+	});
+	
+</script>
+
+</body>
+</html>

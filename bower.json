@@ -1,0 +1,22 @@
+{
+    "name": "cbn-components-i18n-ro",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Internationalized messages and addons for common cbn-* components.",
+    "main": "all.html",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "../",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "polymer": "Polymer/polymer#^0.5"
+    },
+    "devDependencies": {
+        "cbn-form": "git@bitbucket.org:cbn-it/cbn-form.git#master",
+        "web-component-tester": "Polymer/web-component-tester"
+    }
+}

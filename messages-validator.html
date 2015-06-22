@@ -1,0 +1,34 @@
+<!--
+Translated default validation messages.
+-->
+
+<script>
+	
+	// conditional messages injection
+	// runs only if CbnForm.Validator is loaded
+	(function(Validator) {
+		if (!Validator) return;
+		
+		Validator.registerMessages('ro', {
+			"_default": "Valoarea introdusă este invalidă!",
+			
+			// text/basic validators: 
+			"required": "Câmp necompletat!",
+			"pattern": "Valoarea introdusă este invalidă!",
+			"email": "Adresă email invalidă!",
+			"minlength": "Valoarea introdusă este prea scurtă!",
+			"maxlength": "Textul introdus este prea lung!",
+			
+			// numeric validators
+			"number": "Valoarea introdusă nu este numerică!",
+			"min": "Valoarea introdusă este prea mică!",
+			"max": "Valoarea introdusă este prea mare!",
+			
+			// custom validators
+			"ro-cif": "Valoarea introdusă nu este un CIF invalid!",
+			"ro-cnp": "Valoarea introdusă nu este un CNP invalid!"
+		});
+		
+	})( (window.CbnForm && window.CbnForm.Validator ? window.CbnForm.Validator : null ) );
+	
+</script>

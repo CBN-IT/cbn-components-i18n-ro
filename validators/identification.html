@@ -1,0 +1,126 @@
+<!--
+Contains validators for several Romanian identification codes:
+ 
+- CIF (company fiscal code);
+- CNP (personal identification number).
+
+-->
+
+<link rel="import" href="../../cbn-form/cbn-form-validator.html">
+
+<script>
+	
+	(function(Validator) {
+		
+		function normalizeSettings(settings) {
+			if (typeof settings == 'object')
+				return settings;
+			return {
+				validate: settings,
+				message: null
+			};
+		}
+		
+		var CommonValidators = {
+			
+			/**
+			 * Validates a CIF code.
+			 * 
+			 * @param {String} cif The company fiscal code to validate.
+			 * @return {Boolean} True if the code is valid.
+			 */
+			validateCompany: function(cif) {
+				var i, controlNumber, sum;
+				
+				if (!cif) return false;
+				
+				// normalize the code
+				cif = (cif+'').trim().toLowerCase();
+				if (cif.indexOf('ro') == 0)
+					cif = cif.substring(2).trim();
+				
+				while (cif.length < 10) {
+					cif = '0' + cif;
+				}
+				if (cif.length == 10) {
+					controlNumber = "753217532";
+					sum = 0;
+					for (i = cif.length - 2; i >= 0; i--) {
+						sum += (cif[i] * 1) * (controlNumber[i]);
+					}
+					sum *= 10;
+					
+					return (sum % 11 % 10 == cif[cif.length - 1]);
+				}
+				return false;
+			},
+			
+			validatePersonal: function(cnp) {
+				var i, controlNumber, sum, controlDigit;
+				if (!cnp) return false;
+				
+				// normalize the code
+				cnp = (cnp+'').trim().toLowerCase();
+				if (cnp.indexOf('ro') == 0)
+					cnp = cnp.substring(2).trim();
+				
+				if (cnp.length == 13) {
+					controlNumber = "279146358279";
+					sum = 0;
+					for (i = 0; i < cnp.length-1; i++)
+						sum += (controlNumber[i] * 1) * (cnp[i] * 1);
+					controlDigit = sum % 11;
+					if (sum % 11 == 10)
+						controlDigit = 1;
+					
+					return (controlDigit == 1 * cnp[12]);
+				}
+				return false;
+			}
+			
+		};
+		
+		/**
+		 * Validates if the given CNP is well-formed (uses a built-in checksum).
+		 */
+		Validator.register({
+			name: 'ro-cnp',
+			types: ['text'],
+			message: 'Invalid personal identification number!',
+			validate: function(value, settings/*, input, stop */) {
+				settings = normalizeSettings(settings);
+				if (!settings.validate)
+					return true;
+				
+				return CommonValidators.validatePersonal(value);
+			}
+		});
+		
+		/**
+		 * Validates if the given CUI is well-formed (uses a built-in checksum).
+		 * 
+		 * Falls back to CNP validation if not a valid CIF (which can be disabled by supplying a `"personal": false` 
+		 * setting).
+		 */
+		Validator.register({
+			name: 'ro-cif',
+			types: ['text'],
+			message: 'Invalid fiscal code!',
+			validate: function(value, settings/*, input, stop */) {
+				settings = normalizeSettings(settings);
+				if (!settings.validate)
+					return true;
+				if (settings.personal === undefined)
+					settings.personal = true;
+				
+				if (CommonValidators.validateCompany(value)) 
+					return true;
+				
+				// else: try to validate as CNP
+				return (settings.personal && CommonValidators.validatePersonal(value));
+			}
+		});
+		
+	})(CbnForm.Validator);
+	
+</script>
