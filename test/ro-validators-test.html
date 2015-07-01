@@ -52,10 +52,10 @@
 			required: true
 		};
 		input2.validation = {
-			"ro-cnp": true
+			"cnp": true
 		};
 		input3.validation = {
-			"ro-cif": true
+			"cif": true
 		};
 		
 		input1.value = '';
@@ -68,12 +68,12 @@
 				'required i18n-ro message');
 			
 			assert.notOk(input2.validate(), 'ro-cnp validation');
-			assert.equal(input2.validationState.message, CbnForm.Validator._messages['ro']['ro-cnp'], 
-				'ro-cnp i18n-ro message');
+			assert.equal(input2.validationState.message, CbnForm.Validator._messages['ro']['cnp'], 
+				'cnp i18n-ro message');
 			
 			assert.notOk(input3.validate(), 'ro-cif validation');
-			assert.equal(input3.validationState.message, CbnForm.Validator._messages['ro']['ro-cif'], 
-				'ro-cif i18n-ro message');
+			assert.equal(input3.validationState.message, CbnForm.Validator._messages['ro']['cif'], 
+				'cif i18n-ro message');
 			
 			done();
 		});
@@ -87,10 +87,10 @@
 		var input5 = form.querySelector('#input1_5');
 		
 		input1.validation = input2.validation = {
-			"ro-cnp": true
+			"cnp": true
 		};
 		input3.validation = input4.validation = input5.validation = {
-			"ro-cif": true
+			"cif": true
 		};
 		
 		input1.value = '1902342342345'; // invalid
@@ -101,12 +101,12 @@
 		
 		flush(function(){
 			
-			assert.notOk(input1.validate(), 'ro-cnp negative validation');
-			assert.ok(input2.validate(), 'ro-cnp positive validation');
+			assert.notOk(input1.validate(), 'cnp negative validation');
+			assert.ok(input2.validate(), 'cnp positive validation');
 			
-			assert.notOk(input3.validate(), 'ro-cif negative validation');
-			assert.ok(input4.validate(), 'ro-cif positive validation');
-			assert.ok(input5.validate(), 'ro-cif positive CNP validation');
+			assert.notOk(input3.validate(), 'cif negative validation');
+			assert.ok(input4.validate(), 'cif positive validation');
+			assert.ok(input5.validate(), 'cif positive CNP validation');
 			
 			done();
 		});

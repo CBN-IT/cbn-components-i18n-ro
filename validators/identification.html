@@ -84,7 +84,7 @@ Contains validators for several Romanian identification codes:
 		 * Validates if the given CNP is well-formed (uses a built-in checksum).
 		 */
 		Validator.register({
-			name: 'ro-cnp',
+			name: 'cnp',
 			types: ['text'],
 			message: 'Invalid personal identification number!',
 			validate: function(value, settings/*, input, stop */) {
@@ -103,7 +103,7 @@ Contains validators for several Romanian identification codes:
 		 * setting).
 		 */
 		Validator.register({
-			name: 'ro-cif',
+			name: 'cif',
 			types: ['text'],
 			message: 'Invalid fiscal code!',
 			validate: function(value, settings/*, input, stop */) {
