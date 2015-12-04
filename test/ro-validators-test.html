@@ -4,27 +4,28 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	
-	<script src="../../webcomponentsjs/webcomponents.min.js"></script>
+	<script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	
 	<!-- Elements to be tested -->
 	<link rel="import" href="../../cbn-form/cbn-form.html">
-	<link rel="import" href="../../cbn-form/basic-components/basic-input.html">
+	<link rel="import" href="../../cbn-form/elements/polymer-elements.html">
+	<link rel="import" href="../../iron-input/iron-input.html">
 	<link rel="import" href="../validators/identification.html">
 	<link rel="import" href="../messages-validator.html">
 	
 </head>
 <body>
 
-<cbn-form id="firstForm">
+<form is="cbn-form" id="firstForm">
 	
-	<input is="cbn-basic-input" type="text" title="One" id="input1_1" preview name="one" />
-	<input is="cbn-basic-input" type="text" title="Two" id="input1_2" name="two" />
-	<input is="cbn-basic-input" type="text" title="Three" id="input1_3" name="three" />
-	<input is="cbn-basic-input" type="text" title="Four" id="input1_4" name="four" />
-	<input is="cbn-basic-input" type="text" title="Five" id="input1_5" name="five" />
+	<input is="iron-input" type="text" title="One" id="input1_1" preview name="one" />
+	<input is="iron-input" type="text" title="Two" id="input1_2" name="two" />
+	<input is="iron-input" type="text" title="Three" id="input1_3" name="three" />
+	<input is="iron-input" type="text" title="Four" id="input1_4" name="four" />
+	<input is="iron-input" type="text" title="Five" id="input1_5" name="five" />
 	
-</cbn-form>
+</form>
 
 <script>
 	
