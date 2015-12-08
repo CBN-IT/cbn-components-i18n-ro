@@ -21,7 +21,7 @@ Contains validators for several Romanian identification codes:
 			};
 		}
 		
-		var CommonValidators = {
+		var RoValidators = {
 			
 			/**
 			 * Validates a CIF code.
@@ -36,8 +36,12 @@ Contains validators for several Romanian identification codes:
 				
 				// normalize the code
 				cif = (cif+'').trim().toLowerCase();
-				if (cif.indexOf('ro') == 0)
+				if (cif.indexOf('ro') == 0) {
 					cif = cif.substring(2).trim();
+				}
+				if (cif.length == 0 || !cif.match(/^[0-9]+$/i)) {
+					return false;
+				}
 				
 				while (cif.length < 10) {
 					cif = '0' + cif;
@@ -92,7 +96,7 @@ Contains validators for several Romanian identification codes:
 				if (!settings.validate)
 					return true;
 				
-				return CommonValidators.validatePersonal(value);
+				return RoValidators.validatePersonal(value);
 			}
 		});
 		
@@ -113,13 +117,15 @@ Contains validators for several Romanian identification codes:
 				if (settings.personal === undefined)
 					settings.personal = true;
 				
-				if (CommonValidators.validateCompany(value)) 
+				if (RoValidators.validateCompany(value)) 
 					return true;
 				
 				// else: try to validate as CNP
-				return (settings.personal && CommonValidators.validatePersonal(value));
+				return (settings.personal && RoValidators.validatePersonal(value));
 			}
 		});
+		
+		CbnForm.Validator.Ro = RoValidators;
 		
 	})(CbnForm.Validator);
 	
